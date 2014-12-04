@@ -47,7 +47,7 @@ First steps
   ```
   In the next question, type in the domain name or IP address you use to access the Chef server. This should begin with `https://` and end with `:443`:
 
-`Please enter the chef server URL: [https://chef-server:443]` **_https://10.0.0.50:443_**
+`Please enter the chef server URL: [https://chef-server:443] **https://10.0.0.50:443**`
   
   You will be asked for a name for the new user you will be creating.
   ```
