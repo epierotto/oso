@@ -1,4 +1,4 @@
-oso
+OSO
 ===
 
 Open Source Operations Testing Repo
@@ -129,3 +129,26 @@ First steps
   git config --global user.name "Your Name"
   ```
 
+Bootstrap server1
+=================
+
+  Let's add `server1` as a node in the chef-server
+  ```
+  knife bootstrap 10.0.0.50
+  ```
+  
+  It will promt you to enter the password.
+  The default password is `vagrant`
+  ```
+  Connecting to 10.0.0.50
+  Failed to authenticate root - trying password auth
+  Enter your password: 
+  ```
+
+  Now you can check the node list and verify that `server1` is now in the list.
+  ```
+  knife node list
+  
+  server1
+  ```
+ 
