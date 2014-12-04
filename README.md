@@ -34,7 +34,7 @@ First steps
   vagrant ssh -c "sudo cp /etc/chef-server/*.pem /vagrant/.chef/"
   ```
 5- Lets configure the knife.rb
-  ```bash
+  ```
   knife configure -i
   ```
   This will ask you a series of questions. We will go through them one by one:
@@ -43,16 +43,16 @@ First steps
   We want to place our knife configuration file in the hidden directory .chef:
   ```
   WARNING: No knife configuration file found
-  Where should I put the config file? [/home/your_user/.chef/knife.rb] __`.chef/knife.rb`__
+  Where should I put the config file? [/home/your_user/.chef/knife.rb] <b>.chef/knife.rb</b>
   ```
   In the next question, type in the domain name or IP address you use to access the Chef server. This should begin with `https://` and end with `:443`:
   ```
-  Please enter the chef server URL: [https://chef-server:443] __`https://10.0.0.50:443`__
+  Please enter the chef server URL: [https://chef-server:443] <b>https://10.0.0.50:443</b>
   ```
   
   You will be asked for a name for the new user you will be creating.
   ```
-  Please enter a name for the new user: [root] __`your_username`__
+  Please enter a name for the new user: [root] <b>your_username</b>
   ```
 
   Just hit enter to accept the default value (we didn't change the admin name).
@@ -62,7 +62,7 @@ First steps
   
   It will then ask you for the location of the existing administrators key. This should be:
   ``` 
-  Please enter the location of the existing admin's private key: [/etc/chef-server/admin.pem] __`.chef/admin.pem`__
+  Please enter the location of the existing admin's private key: [/etc/chef-server/admin.pem] <b>.chef/admin.pem</b>
   ```
 
   We won't change the validator's name either, so we can keep that as chef-validator. Press enter to accept this value.  
@@ -72,7 +72,7 @@ First steps
 
   Enter the location of the chef-validator's key.
   ```
-  Please enter the location of the validation key: [/etc/chef-server/chef-validator.pem] __`.chef/chef-validator.pem`__
+  Please enter the location of the validation key: [/etc/chef-server/chef-validator.pem] <b>.chef/chef-validator.pem</b>
   ```
 
   Leave it blank, and enter.
@@ -83,7 +83,7 @@ First steps
 
   Set your password and press enter.
   ```
-  Please enter a password for the new user: __`your_password`__
+  Please enter a password for the new user: <b>your_password</b>
   Created user[your_username]
   Configuration file written to ~/oso/.chef/knife.rb
   ```
