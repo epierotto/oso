@@ -43,15 +43,16 @@ First steps
   We want to place our knife configuration file in the hidden directory .chef:
   ```
   WARNING: No knife configuration file found
-  Where should I put the config file? [/home/your_user/.chef/knife.rb] <b>.chef/knife.rb</b>
+  Where should I put the config file? [/home/your_user/.chef/knife.rb] .chef/knife.rb
   ```
   In the next question, type in the domain name or IP address you use to access the Chef server. This should begin with `https://` and end with `:443`:
+  ```
+  Please enter the chef server URL: [https://chef-server:443] https://10.0.0.50:443
+  ```  
 
-`Please enter the chef server URL: [https://chef-server:443] **https://10.0.0.50:443**`
-  
   You will be asked for a name for the new user you will be creating.
   ```
-  Please enter a name for the new user: [root] <b>your_username</b>
+  Please enter a name for the new user: [root] your_username
   ```
 
   Just hit enter to accept the default value (we didn't change the admin name).
@@ -61,7 +62,7 @@ First steps
   
   It will then ask you for the location of the existing administrators key. This should be:
   ``` 
-  Please enter the location of the existing admin's private key: [/etc/chef-server/admin.pem] <b>.chef/admin.pem</b>
+  Please enter the location of the existing admin's private key: [/etc/chef-server/admin.pem] .chef/admin.pem
   ```
 
   We won't change the validator's name either, so we can keep that as chef-validator. Press enter to accept this value.  
@@ -71,7 +72,7 @@ First steps
 
   Enter the location of the chef-validator's key.
   ```
-  Please enter the location of the validation key: [/etc/chef-server/chef-validator.pem] <b>.chef/chef-validator.pem</b>
+  Please enter the location of the validation key: [/etc/chef-server/chef-validator.pem] .chef/chef-validator.pem
   ```
 
   Leave it blank, and enter.
@@ -82,7 +83,10 @@ First steps
 
   Set your password and press enter.
   ```
-  Please enter a password for the new user: <b>your_password</b>
+  Please enter a password for the new user: your_password
+  ```
+
+  ```
   Created user[your_username]
-  Configuration file written to ~/oso/.chef/knife.rb
+  Configuration file written to .chef/knife.rb
   ```
