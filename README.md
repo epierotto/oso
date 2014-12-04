@@ -3,6 +3,13 @@ oso
 
 Open Source Operations Testing Repo
 
+I assume that you already have installed:
+
+[Vagrant](https://www.vagrantup.com/downloads.html)
+[VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+[ChefDK](https://downloads.getchef.com/chef-dk/mac/#/)
+
+Please do check it before go on.
 
 First steps
 ===========
@@ -90,3 +97,35 @@ First steps
   Created user[your_username]
   Configuration file written to .chef/knife.rb
   ```
+
+  We can test whether we can connect successfully with the Chef server requesting the list of all of our users:
+  ```
+  knife user list
+  
+  admin
+  your_username
+  ```
+
+  Now we open and edit `.chef/knife.rb` in order to declare where to find the cookbooks, nodes, environments, etc.
+  Add the following lines:
+  ```
+  cookbook_path    ["cookbooks", "site-cookbooks", "berks-cookbooks"]
+  node_path        "nodes"
+  role_path        "roles"
+  environment_path "environments"
+  data_bag_path    "data_bags"
+  #encrypted_data_bag_secret "data_bag_key"
+  
+  knife[:berkshelf_path] = "cookbooks"
+  knife[:editor] = "/usr/bin/vim"
+  ```
+
+
+6- Get our Chef repository under version control.
+
+  We need to initialize our git name and email. Type:
+  ```
+  git config --global user.email "your_email@domain.com"
+  git config --global user.name "Your Name"
+  ```
+
