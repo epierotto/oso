@@ -21,6 +21,10 @@ First steps
 2- Get in and launch server1
   ```bash
   cd oso
+  
+  rm -rf berks-cookbooks
+
+  berks vendor
 
   vagrant up server1
   ```
