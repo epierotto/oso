@@ -1,0 +1,15 @@
+{
+  "id": "consul",
+  "username": "consul",
+  "comment": "Consul System User",
+  "uid": 501,
+  "gid": 501,
+  "home": "/etc/consul.d",
+  "shell": "/bin/bash",
+  "password": "consul",
+  "system_user": true,
+  "manage_home": false,
+  "create_group": true,
+  "ssh_keys": [],
+  "ssh_keygen": false
+}

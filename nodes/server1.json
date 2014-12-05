@@ -1,0 +1,43 @@
+{
+  "name": "prod",
+  "description": "Production Environment",
+  "cookbook_versions": {
+    "users": "= 1.7.0",
+    "chef-client": "= 3.9.0",
+    "chef-server": "= 2.1.6",
+    "consul": "= 0.5.1",
+    "docker": "= 0.35.2"
+  },
+  "json_class": "Chef::Environment",
+  "chef_type": "environment",
+  "default_attributes": {
+    "chef_client": {
+      "server_url": "https://10.0.0.50:443",
+      "log_level": ":info",
+      "interval": "300"
+    },
+    "sensu": {
+      "version": "0.13.1-1",
+      "use_embedded_ruby": true
+    },
+    "rabbitmq": {
+      "ssl": true,
+      "ssl_cacert": "/etc/rabbitmq/ssl/cacert.pem",
+      "ssl_cert": "/etc/rabbitmq/ssl/cert.pem",
+      "ssl_key": "/etc/rabbitmq/ssl/key.pem",
+      "enabled_plugins": [
+        "rabbitmq_management"
+      ],
+      "enabled_users": [
+        "[{:name : \"sensu\", :password : \"sensu\", :rights :[{ :vhost : \"/sensu\" , :conf : \".*\", :write : \".*\", :read : \".*\" }]}]"
+      ]
+    },
+    "consul": {
+      "service_user": "root",
+      "service_group": "root",
+      "serve_ui": true
+    }
+  },
+  "override_attributes": {
+  }
+}

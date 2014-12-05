@@ -89,17 +89,17 @@ First steps
   ```
 
   Set your password and press enter.
-  ```
+  ```bash
   Please enter a password for the new user: your_password
   ```
 
-  ```
+  ```bash
   Created user[your_username]
   Configuration file written to .chef/knife.rb
   ```
 
   We can test whether we can connect successfully with the Chef server requesting the list of all of our users:
-  ```
+  ```bash
   knife user list
   
   admin
@@ -108,7 +108,7 @@ First steps
 
   Now we open and edit `.chef/knife.rb` in order to declare where to find the cookbooks, nodes, environments, etc.
   Add the following lines:
-  ```
+  ```javascript
   cookbook_path    ["cookbooks", "site-cookbooks", "berks-cookbooks"]
   node_path        "nodes"
   role_path        "roles"
@@ -124,7 +124,7 @@ First steps
 6- Get our Chef repository under version control.
 
   We need to initialize our git name and email. Type:
-  ```
+  ```bash
   git config --global user.email "your_email@domain.com"
   git config --global user.name "Your Name"
   ```
@@ -133,22 +133,42 @@ Bootstrap server1
 =================
 
   Let's add `server1` as a node in the chef-server
-  ```
+  ```bash
   knife bootstrap 10.0.0.50
   ```
   
   It will promt you to enter the password.
   The default password is `vagrant`
-  ```
+  ```bash
   Connecting to 10.0.0.50
   Failed to authenticate root - trying password auth
   Enter your password: 
   ```
 
   Now you can check the node list and verify that `server1` is now in the list.
-  ```
+  ```bash
   knife node list
   
   server1
   ```
- 
+
+Upload the environments, roles, nodes, etc.
+===========================================
+
+  ```bash
+  knife environment from file environments/*.json
+
+  knife role from file roles/*.json
+
+  knife node from file nodes/*.json
+  ```
+
+
+Create required data bags
+=========================
+
+  ```bash
+  knife data bag create users
+
+  knife data bag from file users data_bags/users/*.json
+  ```
