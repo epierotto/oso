@@ -152,18 +152,6 @@ Bootstrap server1
   server1
   ```
 
-Upload the environments, roles, nodes, etc.
-===========================================
-
-  ```bash
-  knife environment from file environments/*.json
-
-  knife role from file roles/*.json
-
-  knife node from file nodes/*.json
-  ```
-
-
 Create required data bags
 =========================
 
@@ -171,4 +159,18 @@ Create required data bags
   knife data bag create users
 
   knife data bag from file users data_bags/users/*.json
+  ```
+
+
+Upload the cookbooks, environments, roles, nodes, etc.
+===========================================
+
+  ```bash
+  knife cookbook upload -a
+  
+  knife environment from file environments/*.json
+
+  knife role from file roles/*.json
+
+  knife node from file nodes/*.json
   ```
