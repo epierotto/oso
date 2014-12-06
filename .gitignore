@@ -6,11 +6,11 @@
 *.un~
 pkg/
 *.pem
+knife.rb
 
 # Berkshelf
 .vagrant
-/cookbooks
+/berks-cookbooks
 Berksfile.lock
 
-/cookbooks/
 /tmp/librarian/

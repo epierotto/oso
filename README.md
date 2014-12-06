@@ -22,8 +22,6 @@ First steps
   ```bash
   cd oso
   
-  rm -rf berks-cookbooks
-
   berks vendor
 
   vagrant up server1
@@ -129,8 +127,8 @@ First steps
 
   We need to initialize our git name and email. Type:
   ```bash
-  git config --global user.email "your_email@domain.com"
-  git config --global user.name "Your Name"
+  git config user.email "your_email@domain.com"
+  git config user.name "Your Name"
   ```
 
 Bootstrap server1
