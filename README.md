@@ -51,8 +51,8 @@ First steps
 
   We want to place our knife configuration file in the hidden directory .chef:
   ```
-  WARNING: No knife configuration file found
-  Where should I put the config file? [/home/your_user/.chef/knife.rb] .chef/knife.rb
+  Overwrite /home/your_user/.chef/knife.rb? (Y/N) Y
+
   ```
   In the next question, type in the domain name or IP address you use to access the Chef server. This should begin with `https://` and end with `:443`:
   ```
@@ -156,7 +156,19 @@ Bootstrap server1
 
 Create required data bags
 =========================
+  
+  Let's generate the ssl certificates.
+  ```
+  cd ssl/
 
+  ./ssl_certs.sh generate
+
+  knife data bag create sensu
+
+  knife data bag from file sensu ssl.json
+  ```
+
+  
   ```bash
   knife data bag create users
 
@@ -176,3 +188,5 @@ Upload the cookbooks, environments, roles, nodes, etc.
 
   knife node from file nodes/*.json
   ```
+
+  

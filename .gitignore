@@ -6,11 +6,13 @@
 *.un~
 pkg/
 *.pem
-knife.rb
 
 # Berkshelf
 .vagrant
-/berks-cookbooks
 Berksfile.lock
-
-/tmp/librarian/
+# Bundler
+Gemfile.lock
+bin/*
+.bundle/*
+.kitchen/
+.kitchen.local.yml

@@ -21,11 +21,11 @@ Vagrant.configure('2') do |config|
 		]
 	end
     server1.berkshelf.enabled = true
-    server1.omnibus.chef_version = :latest
+    server1.omnibus.chef_version = "11.16.4"
 	server1.vm.provision :chef_solo do |chef|
 		chef.json = {
 			'chef-server' => {
-			'version' => :latest
+			'version' => "11.1.6"
 			}
 		}
 		chef.run_list = [
