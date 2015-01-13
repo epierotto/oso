@@ -24,7 +24,6 @@ include_recipe 'ark::default'
 %w[
        dnsmasq
        bind-utils
-       unzip
    ].each do |item|
        package item  do
          action :install
@@ -66,7 +65,7 @@ end
 ark 'consul' do
   path node['consul']['install_dir']
   url 'file:///tmp/0.4.1_linux_amd64.zip'
-  action :dump
+  action :put
 end
 
 file File.join(node['consul']['install_dir'], 'consul') do
