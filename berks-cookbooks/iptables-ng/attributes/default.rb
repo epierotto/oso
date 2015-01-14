@@ -26,12 +26,22 @@ default['iptables-ng']['enabled_ip_versions'] = [4, 6]
 # necessary to remove the "nat" and "raw" tables.
 default['iptables-ng']['enabled_tables'] = %w(nat filter mangle raw)
 
+# Enable nat support for ipv6
+# Older distributions do not support ipv6 nat, but recent Ubuntu does
+default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
+  'ubuntu' => { '14.04' => true, '14.10' => true, 'default' => false },
+  'default' => false,
+)
+
 # Packages to install
 default['iptables-ng']['packages'] = case node['platform_family']
 when 'debian'
   %w(iptables iptables-persistent)
 when 'rhel'
-  if node['platform_version'].to_f >= 7.0
+  if node['platform'] == 'amazon'
+    # Amazon Linux doesn't include "iptables-services" or "iptables-ipv6"
+    %w(iptables)
+  elsif node['platform_version'].to_f >= 7.0
     %w(iptables iptables-services)
   else
     %w(iptables iptables-ipv6)

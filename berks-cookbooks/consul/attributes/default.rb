@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-default['consul']['base_url'] = 'https://dl.bintray.com/mitchellh/consul/'
+default['consul']['base_url'] = "https://dl.bintray.com/mitchellh/consul/%{version}.zip"
 default['consul']['version'] = '0.4.1'
 default['consul']['install_method'] = 'binary'
 default['consul']['install_dir'] = '/usr/local/bin'
@@ -45,6 +45,10 @@ default['consul']['source_revision'] = 'master'
 
 # Service attributes
 default['consul']['service_mode'] = 'bootstrap'
+default['consul']['retry_on_join'] = false
+
+# In the cluster mode, set the default cluster size to 3
+default['consul']['bootstrap_expect'] = 3
 default['consul']['data_dir'] = '/var/lib/consul'
 default['consul']['config_dir'] = '/etc/consul.d'
 case node['platform_family']
@@ -58,8 +62,43 @@ end
 
 default['consul']['servers'] = []
 default['consul']['init_style'] = 'init'   # 'init', 'runit'
-default['consul']['service_user'] = 'consul'
-default['consul']['service_group'] = 'consul'
+
+case node['consul']['init_style']
+when 'runit'
+  default['consul']['service_user'] = 'consul'
+  default['consul']['service_group'] = 'consul'
+else
+  default['consul']['service_user'] = 'root'
+  default['consul']['service_group'] = 'root'
+end
+
+default['consul']['ports'] = {
+  'dns'      => 8600,
+  'http'     => 8500,
+  'rpc'      => 8400,
+  'serf_lan' => 8301,
+  'serf_wan' => 8302,
+  "server"   => 8300,
+}
+
+# Consul DataBag
+default['consul']['data_bag'] = 'consul'
+default['consul']['data_bag_encrypt_item'] = 'encrypt'
+
+# Gossip encryption
+default['consul']['encrypt_enabled'] = false
+default['consul']['encrypt'] = nil
+# TLS support
+default['consul']['verify_incoming'] = false
+default['consul']['verify_outgoing'] = false
+# Cert in pem format
+default['consul']['ca_cert'] = nil
+default['consul']['ca_path'] = "%{config_dir}/ca.pem"
+default['consul']['cert_file'] = nil
+default['consul']['cert_path'] = "%{config_dir}/cert.pem"
+# Cert in pem format. It can be unique for each host
+default['consul']['key_file'] = nil
+default['consul']['key_file_path'] = "%{config_dir}/key.pem"
 
 # Optionally bind to a specific interface
 default['consul']['bind_interface'] = nil
@@ -70,3 +109,4 @@ default['consul']['client_interface'] = nil
 default['consul']['client_addr'] = '0.0.0.0'
 default['consul']['ui_dir'] = '/var/lib/consul/ui'
 default['consul']['serve_ui'] = false
+default['consul']['extra_params'] = {}

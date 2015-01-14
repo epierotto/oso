@@ -6,6 +6,6 @@ cookbook 'chef-client', '~> 3.9.0'
 
 cookbook 'docker', '~> 0.35.2'
 
-cookbook 'consul', '~> 0.5.1'
+cookbook 'consul', '~> 0.6.1', git: 'https://github.com/epierotto/consul-cookbook.git'
 
 cookbook 'user', '~> 0.3.1', git: 'https://github.com/fnichol/chef-user.git'
