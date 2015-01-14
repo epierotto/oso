@@ -4,13 +4,13 @@ consul-cookbook
 [![Build Status](http://img.shields.io/travis/johnbellone/consul-cookbook.svg)][5]
 [![Code Coverage](http://img.shields.io/coveralls/johnbellone/consul-cookbook.svg)][6]
 
-Installs and configures [Consul][1].
+Installs and configures [Consul][1] client, server and UI.
 
 ## Supported Platforms
 
 - CentOS 5.10, 6.5, 7.0
 - RHEL 5.10, 6.5, 7.0
-- Ubuntu 12.04, 14.04
+- Ubuntu 10.04, 12.04, 14.04
 
 ## Attributes
 
@@ -80,6 +80,12 @@ Installs and configures [Consul][1].
     <td>Array Strings</td>
     <td>Consul servers to join</td>
     <td><tt>[]</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['retry_on_join']</tt></td>
+    <td>Boolean</td>
+    <td>Set to true to wait for servers to be up before try to elect a leader</td>
+    <td><tt>false</tt></td>
   </tr>
   <tr>
     <td><tt>['consul']['bind_addr']</tt></td>
@@ -162,6 +168,134 @@ Installs and configures [Consul][1].
     </td>
     <td><tt>nil</tt></td>
   </tr>
+  <tr>
+    <td><tt>['consul']['extra_params']</tt></td>
+    <td>hash</td>
+    <td>
+       Pass a hash of extra params to the default.json config file
+    </td>
+    <td><tt>{}</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['encrypt_enabled']</tt></td>
+    <td>Boolean</td>
+    <td>
+      To enable Consul gossip encryption
+    </td>
+    <td><tt>false</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['verify_incoming']</tt></td>
+    <td>Boolean</td>
+    <td>
+      If set to True, Consul requires that all incoming connections make use of TLS.
+    </td>
+    <td><tt>false</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['verify_outgoing']</tt></td>
+    <td>Boolean</td>
+    <td>
+      If set to True, Consul requires that all outgoing connections make use of TLS.
+    </td>
+    <td><tt>false</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['key_file']</tt></td>
+    <td>String</td>
+    <td>
+      The content of PEM encoded private key
+    </td>
+    <td><tt>nil</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['key_file_path']</tt></td>
+    <td>String</td>
+    <td>
+      Path where the private key is stored on the disk
+    </td>
+    <td><tt>/etc/consul.d/key.pem</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['ca_file']</tt></td>
+    <td>String</td>
+    <td>
+      The content of PEM encoded ca cert
+    </td>
+    <td><tt>nil</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['ca_file_path']</tt></td>
+    <td>String</td>
+    <td>
+      Path where ca is stored on the disk
+    </td>
+    <td><tt>/etc/consul.d/ca.pem</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['cert_file']</tt></td>
+    <td>String</td>
+    <td>
+      The content of PEM encoded cert. It should only contain the public key.
+    </td>
+    <td><tt>nil</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['consul']['cert_file_path']</tt></td>
+    <td>String</td>
+    <td>
+        Path where cert is stored on the disk
+    </td>
+    <td><tt>/etc/consul.d/cert.pem</tt></td>
+  </tr>
+</table>
+
+### Databag Attributes (optional)
+Following attributes, if exist in the [encrypted databag][7], override the node attributes
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Databag item</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>key_file</tt></td>
+    <td>['consul']['encrypt']</td>
+    <td>String</td>
+    <td>The content of PEM encoded private key</td>
+  </tr>
+  <tr>
+    <td><tt>key_file_{fqdn}</tt></td>
+    <td>['consul']['encrypt']</td>
+    <td>String</td>
+    <td>Node's(identified by fqdn) unique PEM encoded private key. If it exists, it will override the databag and node key_file attribute</td>
+  </tr>
+  <tr>
+    <td><tt>ca_file</tt></td>
+    <td>['consul']['encrypt']</td>
+    <td>String</td>
+    <td>The content of PEM encoded ca cert</td>
+  </tr>
+  <tr>
+    <td><tt>encrypt</tt></td>
+    <td>['consul']['encrypt']</td>
+    <td>String</td>
+    <td>Consul Gossip encryption key</td>
+  </tr>
+  <tr>
+    <td><tt>cert_file</tt></td>
+    <td>['consul']['encrypt']</td>
+    <td>String</td>
+    <td>The content of PEM encoded cert</td>
+  </tr>
+  <tr>
+    <td><tt>cert_file_{fqdn}</tt></td>
+    <td>['consul']['encrypt']</td>
+    <td>String</td>
+    <td>Node's(identified by fqdn) unique PEM encoded cert. If it exists, it will override the databag and node cert_file attribute</td>
+  </tr>
 </table>
 
 ### Consul UI Attributes
@@ -203,14 +337,31 @@ Installs and configures [Consul][1].
 </table>
 
 ## Usage
+The easiest way to bootstrap a cluster is to use the cluster recipe
+and use [Chef provisioning][8] which is a relatively new
+extension. This extension allows you to use any driver and easily
+stand up a cluster. Once the [Chef Development Kit][9] has been
+installed you can run the following command to provision a cluster.
+
+```ruby
+gem install chef-provisioning chef-provisioning-fog
+export CHEF_DRIVER=fog:AWS
+chef-client -z cluster.rb
+```
+
+Please follow the [Chef provisioning README][10] which provides more
+detailed information about provisioning. You'll need to configure
+your credentials prior to provisioning.
 
 ### consul::default
-
-This uses the binary installation recipe by default. It also starts consul at boot time.
+The default recipe will install the Consul agent using the
+`consul::install_binary` recipe. It will also configure and
+start consul at the machine boot.
 
 ### consul::install_binary
-
-Include `consul::install_binary` in your node's `run_list`:
+If you only wish to simply install the binary from the official
+mirror you simply include `consul::install_binary` in your node's
+`run_list`:
 
 ```json
 {
@@ -221,8 +372,10 @@ Include `consul::install_binary` in your node's `run_list`:
 ```
 
 ### consul::install_source
-
-Include `consul::install_source` in your node's `run_list`:
+Instead if you wish to install Consul from source you simply need
+to include `consul::install_source` in your node's `run_list`. This
+will also configure the Go language framework on the node to build
+the application.
 
 ```json
 {
@@ -233,10 +386,8 @@ Include `consul::install_source` in your node's `run_list`:
 ```
 
 ### consul::ui
-
-This installs the UI into a specified directory.
-
-Include `consul::ui` in your node's `run_list`:
+Installing the separate Consul UI simply requires you to include
+the `consul::ui` recipe in your node's `run_list`.
 
 ```json
 {
@@ -248,6 +399,24 @@ Include `consul::ui` in your node's `run_list`:
 
 ### LWRP
 
+##### Adding key watch
+    consul_key_watch_def 'key-watch-name' do
+      key "/key/path"
+      handler "chef-client"
+    end
+
+
+##### Adding event watch
+    consul_event_watch_def 'event-name' do
+      handler "chef-client"
+    end
+
+##### Adding service watch
+    consul_service_watch_def 'service-name' do
+		  passingonly true
+      handler "chef-client"
+    end
+		
 ##### Adding service without check
 
     consul_service_def 'voice1' do
@@ -280,7 +449,7 @@ Include `consul::ui` in your node's `run_list`:
 ####  Getting Started
 
 To bootstrap a consul cluster follow the following steps:
-
+ 0.  Make sure that ports 8300-8302 (by default, if you configured differnt ones open those)  UDP/TCP are all open.
  1.  Bootstrap a few (preferablly 3 nodes) to be your consul servers, these will be the KV masters.
  2.  Put `node['consul']['servers'] =["Array of the bootstrapped servers ips or dns names"]` in your environment.
  3.  Apply the consul cookbook to these nodes with `node['consul']['service_mode'] = 'cluster'` (I put this in this in a CONSUL_MASTER role).
@@ -299,3 +468,7 @@ Created and maintained by [John Bellone][3] [@johnbellone][2] (<jbellone@bloombe
 [4]: https://github.com/johnbellone/consul-cookbook/graphs/contributors
 [5]: http://travis-ci.org/johnbellone/consul-cookbook
 [6]: https://coveralls.io/r/johnbellone/consul-cookbook
+[7]: https://docs.getchef.com/essentials_data_bags.html
+[8]: https://github.com/opscode/chef-provisioning
+[9]: https://github.com/opscode/chef-dk
+[10]: https://github.com/opscode/chef-provisioning/blob/master/README.md

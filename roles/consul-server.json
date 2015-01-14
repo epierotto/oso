@@ -1,0 +1,23 @@
+{
+  "name": "consul-server",
+  "description": "Server running Consul agent in server mode",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "consul": {
+      "serve_ui": true
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+
+  ],
+  "env_run_lists": {
+    "prod": [
+      "recipe[consul]",
+      "recipe[consul::ui]",
+      "recipe[consul::dns]"
+    ]
+  }
+}
